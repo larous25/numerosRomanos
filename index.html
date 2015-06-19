@@ -35,8 +35,7 @@
 
 			var unidadDeMil = ['M','MM','MMM','Mv','v','vM','vMM','vMMM','Mx'];
 
-			// var numerosRomanos = [romanosUnidades,romanosDecenas,romanosCentenas,unidadDeMil];
-			var numerosRomanos = [unidadDeMil,romanosCentenas,romanosDecenas,romanosUnidades];
+			var numerosRomanos = [romanosUnidades,romanosDecenas,romanosCentenas,unidadDeMil];
 			
 			/* mira si es un numero */
 			$scope.numeros = function (numero){
@@ -44,40 +43,22 @@
 				numero = numero.toString();
 				if(!isNaN(numero)){
 					/* mira que numero es unidad, decena o centena */
-					if(numero < 10){
-					
-						console.log('unidad \t' + romanosUnidades[numero-numeroUno]);
-						return romanosUnidades[numero-numeroUno];
-					
-					}else if(numero >= 10 && numero < 100){
+					if(numero.length < 5){
 						
-						var decena = romanosDecenas[numero[numeroUno-numeroUno]-numeroUno];
-						var unidad = romanosUnidades[numero[numeroUno]-numeroUno]== undefined ? '' : romanosUnidades[numero[numeroUno]-numeroUno];
-						console.log('decena \t'+ decena + unidad);
+						var numeroTemp = [];
+						var numeroTemp2 = []
 
-						return  decena + unidad;
-					}else if(numero >= 100 &&  numero < 1000){
+						for (var i = 0; i < numero.length; i++) {
+							numeroTemp2.push(i);
+						};
+						numeroTemp2 = numeroTemp2.reverse(i);
+						for (var i = 0; i < numero.length; i++) {
+							numeroTemp.push((numerosRomanos[numeroTemp2[i]][numero[i]-numeroUno]== undefined )? '' : numerosRomanos[numeroTemp2[i]][numero[i]-numeroUno]);
+						};
 
-						var centena = romanosCentenas[numero[numeroUno-numeroUno]-numeroUno];
-						var decena  = romanosDecenas[numero[numeroUno]-numeroUno]== undefined ? '' : romanosDecenas[numero[numeroUno]-numeroUno];
-						var unidad  = romanosUnidades[numero[numeroUno+numeroUno]-numeroUno]== undefined ? '' : romanosUnidades[numero[numeroUno+numeroUno]-numeroUno];
-						console.log('centena \t'+
-							 centena + decena + unidad 
-							);
-
-						return  centena+decena+unidad;
-					}else{	
-						if(numero.length < 5	 ){
-							var numeroTemp = '';
-							for (var i = 0; i < numero.length; i++) {
-								console.log(numerosRomanos[i]);
-								console.log(numerosRomanos[i][numero[i]-numeroUno]);
-								var  temp = (numerosRomanos[i][numero[i]-numeroUno]== undefined )? '' : numerosRomanos[i][numero[i]-numeroUno];
-								numeroTemp += temp;
-							};
-							return numeroTemp;
-						}
+						return numeroTemp.join('');
 					}
+
 				}else{
 					return 'Es necesario un numero';
 				}

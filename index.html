@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Numeros Decimales</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body ng-app="uno">
+	<div ng-controller="unico">
+			
+		<h1 style="text-align: center">De decimales a romanos</h1>
+		<p style="text-align: center">
+			funciona con los numeros del <strong>1</strong> al <strong>9999</strong>
+			sin puntos ni comas, los numeros <span style="border-top:1px solid">V</span> y <span style="border-top:1px solid">X</span> fueron remplazados 
+			por minusculas
+		</p>
+		<form style="width: 70%;margin: 0 auto">
+			<label>Ingrese Un Numero</label>
+			<input type="text" class="form-control" ng-model="decimal">
+		</form>
+		<div ng-show="decimal" style="text-align: center; font-size: 80px;font-weight: bold;">
+			{{numeros(decimal)}}
+		</div>
+	</div>
+
+	<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+	<script type="text/javascript">
+
+		var app = angular.module('uno', []);
+		app.controller('unico', ['$scope', function($scope){
+			var numeroUno = 1;
+			var romanosUnidades = ['I','II','III','IV','V','VI','VII','VIII','IX'];
+			var romanosDecenas = ['X','XX','XXX','XL','L','LX','LXX','LXXX','XC'];
+			var romanosCentenas = ['C','CC','CCC','CD','D','DC','DCC','DCCC','CM'];
+
+			var unidadDeMil = ['M','MM','MMM','Mv','v','vM','vMM','vMMM','Mx'];
+
+			// var numerosRomanos = [romanosUnidades,romanosDecenas,romanosCentenas,unidadDeMil];
+			var numerosRomanos = [unidadDeMil,romanosCentenas,romanosDecenas,romanosUnidades];
+			
+			/* mira si es un numero */
+			$scope.numeros = function (numero){
+				numero = Math.abs(numero);
+				numero = numero.toString();
+				if(!isNaN(numero)){
+					/* mira que numero es unidad, decena o centena */
+					if(numero < 10){
+					
+						console.log('unidad \t' + romanosUnidades[numero-numeroUno]);
+						return romanosUnidades[numero-numeroUno];
+					
+					}else if(numero >= 10 && numero < 100){
+						
+						var decena = romanosDecenas[numero[numeroUno-numeroUno]-numeroUno];
+						var unidad = romanosUnidades[numero[numeroUno]-numeroUno]== undefined ? '' : romanosUnidades[numero[numeroUno]-numeroUno];
+						console.log('decena \t'+ decena + unidad);
+
+						return  decena + unidad;
+					}else if(numero >= 100 &&  numero < 1000){
+
+						var centena = romanosCentenas[numero[numeroUno-numeroUno]-numeroUno];
+						var decena  = romanosDecenas[numero[numeroUno]-numeroUno]== undefined ? '' : romanosDecenas[numero[numeroUno]-numeroUno];
+						var unidad  = romanosUnidades[numero[numeroUno+numeroUno]-numeroUno]== undefined ? '' : romanosUnidades[numero[numeroUno+numeroUno]-numeroUno];
+						console.log('centena \t'+
+							 centena + decena + unidad 
+							);
+
+						return  centena+decena+unidad;
+					}else{	
+						if(numero.length < 5	 ){
+							var numeroTemp = '';
+							for (var i = 0; i < numero.length; i++) {
+								console.log(numerosRomanos[i]);
+								console.log(numerosRomanos[i][numero[i]-numeroUno]);
+								var  temp = (numerosRomanos[i][numero[i]-numeroUno]== undefined )? '' : numerosRomanos[i][numero[i]-numeroUno];
+								numeroTemp += temp;
+							};
+							return numeroTemp;
+						}
+					}
+				}else{
+					return 'Es necesario un numero';
+				}
+				
+			}
+
+		}])
+	</script>
+</body>
+</html>
